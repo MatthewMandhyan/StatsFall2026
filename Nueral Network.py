@@ -24,7 +24,7 @@ X_dev = X_dev / 255.
 
 def init_params():
     #first layer
-    w1 = np.random.randn(15, 784)
+    w1 = np.random.randn(15, 784) 
     b1 = np.random.randn(15,1)
     #second layer
     w2 = np.random.randn(10,15)
