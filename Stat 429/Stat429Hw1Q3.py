@@ -95,6 +95,27 @@ plt.ylabel("Sales")
 plt.title("Model (8) with k=4: Fitted vs Observed")
 plt.legend()
 
+
+#------- Question 3 Part E -------
+
+n_future = 36 #36 months into the future
+t_future = np.arange(df['t'].iloc[-1] + 1, df['t'].iloc[-1] + 1 + n_future )
+
+X_future = pd.DataFrame({'t': t_future})
+X_future["I"] = 1
+X_future['tI'] = t_future
+
+X_future = sm.add_constant(X_future, has_constant='add')
+for i in range(1, 5):
+    X_future[f"cos{i}"] = np.cos(2*np.pi*i*t_future/12)
+    X_future[f"sin{i}"] = np.sin(2*np.pi*i*t_future/12)
+
+forecast = model8.predict(X_future)
+
+future_dates = pd.date_range(start=df['date'].iloc[-1] + pd.DateOffset(months=1), periods=36, freq='MS')
+
+plt.plot(future_dates, forecast, label="Forecast (36 months)", color="red")
+
 plt.show()
 
 
