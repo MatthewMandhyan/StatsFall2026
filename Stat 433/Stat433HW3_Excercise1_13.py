@@ -4,8 +4,12 @@ from scipy import linalg
 
 def get_G(MC,outdeg,df):
     P = np.zeros((len(MC),len(MC)))
+    n = MC.shape[0]
     for i in range(len(MC)):
-        P[i,:] = MC[i,:]/outdeg[i]
+        if outdeg[i] == 0:
+            P[i,:] = 1/n    
+        else:
+            P[i,:] = MC[i,:]/outdeg[i]
     G = df*P + (1-df)*(1/len(MC))*np.ones((len(MC),len(MC)))
     return G
 
@@ -19,7 +23,7 @@ def PageRank(MC,outdeg,df):
     return pi
 
 
- if __name__ == "__main__":
+if __name__ == "__main__":
 
     A1 = np.array([
         [0, 0, 0, 0, 1, 1, 0],
