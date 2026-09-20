@@ -19,7 +19,7 @@ def PageRank(MC,outdeg,df):
     return pi
 
 
- if __name__ == "__main__"
+ if __name__ == "__main__":
 
     A1 = np.array([
         [0, 0, 0, 0, 1, 1, 0],
