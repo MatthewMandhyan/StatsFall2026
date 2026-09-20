@@ -1,4 +1,4 @@
-from Stat433HW3_Excercise1_13 import PageRank, A1, states
+from Stat433HW3_Excercise1_13 import A1,states
 import numpy as np
 import pandas as pd
 from scipy import linalg
@@ -8,9 +8,12 @@ damping_factor = 1 - delta
 
 outdeg = np.sum(A1, axis = 1)
 
-pr = PageRank(A1, outdeg, damping_factor)
 
+index = np.arange(len(A1))
+
+pos = np.random.choice(index)
+order=[states[pos]]
 for i in range(1,21):
-    start = np.random.choice([states], p=1/7)
-    next_pos = np.random.choice
-    pass
+    pos = np.random.choice(index, p =A1[pos,:]/outdeg[pos])
+    order.append(states[pos])
+print(order)
