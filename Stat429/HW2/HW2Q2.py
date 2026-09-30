@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import librosa
 from scipy.special import softmax
+from scipy import stats
 
 
 # ----- Question 2 Part A -----
@@ -56,6 +57,43 @@ print(f"95% interval for f: [{f_lower}, {f_upper}]")
 
 print(f"Point estimate of period: {1/best_f} years")
 print(f"95% interval for period: [{1/f_upper}, {1/f_lower}] years")
+
+
+
+
+# ----- Question 2 Part C -----
+
+X[:,0] = 1
+X[:,1] = np.cos(2*np.pi*best_f*t)
+X[:,2] = np.sin(2*np.pi*best_f*t)
+
+model2 = sm.OLS(y,X).fit()
+b0hat, b1hat, b2hat = model2.params
+rss2 = np.sum(model2.resid**2)
+sighat = np.sqrt(rss2/(n-3))
+
+se0,  se1, se2 = model2.bse
+
+test_crit = stats.t.ppf(.975,n-3)
+
+print(f"Uncertainity Interval for B0: [{b0hat - test_crit*se0},{b0hat + test_crit*se0}]")
+print(f"Uncertainity Interval for B1: [{b1hat - test_crit*se1},{b1hat + test_crit*se1}]")
+print(f"Uncertainity Interval for B2: [{b2hat - test_crit*se2},{b2hat + test_crit*se2}]")
+
+q1 = stats.chi2.ppf(.025,n-3)
+q2 = stats.chi2.ppf(.975,n-3)
+
+print(f"Uncertainity Interval for Sigma: [{np.sqrt(rss2/q2)},{np.sqrt(rss2/q1)}]")
+
+resid = model2.resid
+
+plt.figure(figsize=(10, 5))
+plt.plot(t, y, label='Observed')
+plt.plot(t, model2.fittedvalues, label='Fitted sinusoid')
+plt.xlabel('Years since 1821')
+plt.ylabel('Lynx trappings')
+plt.title('Data vs. fitted model')
+plt.legend()
 
 
 plt.show()
